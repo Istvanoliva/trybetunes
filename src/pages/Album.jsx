@@ -41,6 +41,7 @@ export default class Album extends Component {
               <MusicCard
                 name={ song.trackName }
                 audio={ song.previewUrl }
+                trackId={ song.trackId }
               />
             </li>
           ))
