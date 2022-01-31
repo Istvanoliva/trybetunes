@@ -4,23 +4,36 @@ import { addSong } from '../services/favoriteSongsAPI';
 import Loading from './Loading';
 
 export default class MusicCard extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       loading: false,
+      favorite: props.favorite,
     };
   }
+
+  // componentDidMount() {
+  //   this.cathFavoritesSongs();
+  // }
 
   favoriteSongs = async () => {
     const { trackId } = this.props;
     this.setState({ loading: true });
     await addSong(trackId);
-    this.setState({ loading: false });
+    this.setState((prevState) => ({ favorite: !prevState.favorite, loading: false }));
   }
+
+  // cathFavoritesSongs = async () => {
+  //   const { trackId } = this.props;
+  //   const isFavorite = await getFavoriteSongs();
+  //   const favorite = isFavorite.some((song) => song.trackId === trackId);
+  //   this.setState({ favorites: favorite });
+  // }
 
   render() {
     const { name, audio, trackId } = this.props;
+    const { favorite } = this.state;
     const { loading } = this.state;
     return (
       <div>
@@ -44,6 +57,7 @@ export default class MusicCard extends Component {
               id="favorite"
               data-testid={ `checkbox-music-${trackId}` }
               onChange={ this.favoriteSongs }
+              checked={ favorite }
             />
           </label>
         </div>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
+import { getFavoriteSongs } from '../services/favoriteSongsAPI';
 
 export default class Album extends Component {
   constructor() {
@@ -11,12 +12,26 @@ export default class Album extends Component {
       name: '',
       album: '',
       trackList: [],
+      favorites: [],
     };
   }
 
-  componentDidMount() {
-    this.getAlbumInfos();
+  async componentDidMount() {
+    // await this.cathFavoritesSongs();
+    await this.getAlbumInfos();
   }
+
+  // cathFavoritesSongs = async () => {
+  //   const { trackId } = this.props;
+  //   const isFavorite = await getFavoriteSongs();
+  //   const favorite = isFavorite.some((song) => song.trackId === trackId);
+  //   this.setState({ favorites: favorite });
+  // }
+
+  // cathFavoritesSongs = async () => {
+  //   const isFavorite = await getFavoriteSongs();
+  //   this.setState({ favorites: isFavorite });
+  // }
 
   getAlbumInfos = async () => {
     const { match: { params: { id } } } = this.props;
@@ -24,11 +39,16 @@ export default class Album extends Component {
     const musicList = fetchMusicList.filter((s) => s.kind === 'song');
     const getArtistId = fetchMusicList.find((artist) => artist.artistName);
     const { artistName, collectionName } = getArtistId;
-    this.setState({ name: artistName, album: collectionName, trackList: musicList });
+    const isFavorite = await getFavoriteSongs();
+    // this.setState({ favorites: isFavorite });
+    this.setState({ name: artistName,
+      album: collectionName,
+      trackList: musicList,
+      favorites: isFavorite });
   }
 
   render() {
-    const { name, album, trackList } = this.state;
+    const { name, album, trackList, favorites } = this.state;
     return (
       <div data-testid="page-album">
         <Header />
@@ -42,6 +62,8 @@ export default class Album extends Component {
                 name={ song.trackName }
                 audio={ song.previewUrl }
                 trackId={ song.trackId }
+                favorite={ favorites
+                  .some((favoriteSong) => favoriteSong === song.trackId) }
               />
             </li>
           ))
