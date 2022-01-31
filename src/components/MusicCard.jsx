@@ -25,6 +25,7 @@ export default class MusicCard extends Component {
   }
 
   favoriteSongs = async () => {
+    const { song } = this.props;
     this.setState({ loading: true });
     await addSong(song);
     this.setState((prevState) => ({ favorite: !prevState.favorite, loading: false }));
