@@ -16,8 +16,8 @@ export default class Album extends Component {
     };
   }
 
-  async componentDidMount() {
-    await this.getAlbumInfos();
+  componentDidMount() {
+    this.getAlbumInfos();
   }
 
   getAlbumInfos = async () => {
