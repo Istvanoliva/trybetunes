@@ -17,30 +17,16 @@ export default class Album extends Component {
   }
 
   async componentDidMount() {
-    // await this.cathFavoritesSongs();
     await this.getAlbumInfos();
   }
-
-  // cathFavoritesSongs = async () => {
-  //   const { trackId } = this.props;
-  //   const isFavorite = await getFavoriteSongs();
-  //   const favorite = isFavorite.some((song) => song.trackId === trackId);
-  //   this.setState({ favorites: favorite });
-  // }
-
-  // cathFavoritesSongs = async () => {
-  //   const isFavorite = await getFavoriteSongs();
-  //   this.setState({ favorites: isFavorite });
-  // }
 
   getAlbumInfos = async () => {
     const { match: { params: { id } } } = this.props;
     const fetchMusicList = await getMusics(id);
-    const musicList = fetchMusicList.filter((s) => s.kind === 'song');
+    const musicList = fetchMusicList.filter((song) => song.kind === 'song');
     const getArtistId = fetchMusicList.find((artist) => artist.artistName);
     const { artistName, collectionName } = getArtistId;
     const isFavorite = await getFavoriteSongs();
-    // this.setState({ favorites: isFavorite });
     this.setState({ name: artistName,
       album: collectionName,
       trackList: musicList,
@@ -59,11 +45,8 @@ export default class Album extends Component {
           trackList.map((song) => (
             <li key={ song.trackId }>
               <MusicCard
-                name={ song.trackName }
-                audio={ song.previewUrl }
-                trackId={ song.trackId }
-                favorite={ favorites
-                  .some((favoriteSong) => favoriteSong === song.trackId) }
+                favorite={ favorites }
+                song={ song }
               />
             </li>
           ))

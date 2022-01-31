@@ -4,37 +4,36 @@ import { addSong } from '../services/favoriteSongsAPI';
 import Loading from './Loading';
 
 export default class MusicCard extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     this.state = {
       loading: false,
-      favorite: props.favorite,
+      favorite: false,
     };
   }
 
-  // componentDidMount() {
-  //   this.cathFavoritesSongs();
-  // }
+  componentDidMount() {
+    this.checkFavoriteSong();
+  }
+
+  checkFavoriteSong = () => {
+    const { song, favorite } = this.props;
+    const { trackId } = song;
+    const isFavorite = favorite.some((favoriteSong) => favoriteSong.trackId === trackId);
+    if (isFavorite) this.setState({ favorite: true });
+  }
 
   favoriteSongs = async () => {
-    const { trackId } = this.props;
     this.setState({ loading: true });
-    await addSong(trackId);
+    await addSong(song);
     this.setState((prevState) => ({ favorite: !prevState.favorite, loading: false }));
   }
 
-  // cathFavoritesSongs = async () => {
-  //   const { trackId } = this.props;
-  //   const isFavorite = await getFavoriteSongs();
-  //   const favorite = isFavorite.some((song) => song.trackId === trackId);
-  //   this.setState({ favorites: favorite });
-  // }
-
   render() {
-    const { name, audio, trackId } = this.props;
-    const { favorite } = this.state;
-    const { loading } = this.state;
+    const { song } = this.props;
+    const { trackName, previewUrl, trackId } = song;
+    const { favorite, loading } = this.state;
     return (
       <div>
         <div>
@@ -42,8 +41,8 @@ export default class MusicCard extends Component {
             loading ? <Loading />
               : (
                 <div>
-                  <p>{ name }</p>
-                  <audio data-testid="audio-component" src={ audio } controls>
+                  <p>{ trackName }</p>
+                  <audio data-testid="audio-component" src={ previewUrl } controls>
                     <track kind="captions" />
                     O seu navegador não suporta o elemento
                     <code>audio</code>
