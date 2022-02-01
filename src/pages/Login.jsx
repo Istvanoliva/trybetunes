@@ -8,6 +8,9 @@ export default class Login extends Component {
     super();
     this.state = {
       inputLogin: '',
+      inputEmail: '',
+      inputImage: '',
+      inputDescription: '',
       loading: false,
       redirect: false,
     };
@@ -21,14 +24,22 @@ export default class Login extends Component {
   }
 
   submitButton = async () => {
-    const { inputLogin } = this.state;
+    const { inputLogin, inputEmail, inputImage, inputDescription } = this.state;
     this.setState({ loading: true });
-    await createUser({ name: inputLogin });
+    await createUser({ name: inputLogin,
+      email: inputEmail,
+      image: inputImage,
+      description: inputDescription });
     this.setState({ loading: false, redirect: true });
   }
 
   render() {
-    const { inputLogin, redirect, loading } = this.state;
+    const { inputLogin,
+      inputEmail,
+      inputImage,
+      inputDescription,
+      redirect,
+      loading } = this.state;
     const minLength = 3;
 
     if (redirect) return <Redirect to="/search" />;
@@ -50,6 +61,40 @@ export default class Login extends Component {
                     id="inputLogin"
                   />
                 </label>
+
+                <label htmlFor="inputEmail">
+                  <h3>Email</h3>
+                  <input
+                    type="text"
+                    value={ inputEmail }
+                    onChange={ this.handleChange }
+                    name="inputEmail"
+                    id="inputEmail"
+                  />
+                </label>
+
+                <label htmlFor="inputImage">
+                  <h3>Imagem</h3>
+                  <input
+                    type="text"
+                    value={ inputImage }
+                    onChange={ this.handleChange }
+                    name="inputImage"
+                    id="inputImage"
+                  />
+                </label>
+
+                <label htmlFor="inputDescription">
+                  <h3>Descrição</h3>
+                  <input
+                    type="text"
+                    value={ inputDescription }
+                    onChange={ this.handleChange }
+                    name="inputDescription"
+                    id="inputDescription"
+                  />
+                </label>
+
                 <button
                   data-testid="login-submit-button"
                   type="submit"
