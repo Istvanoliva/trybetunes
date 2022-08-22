@@ -34,7 +34,7 @@ export default class MusicCard extends Component {
   }
 
   removeTrack = async () => {
-    const { song } = this.props;
+    const { song, teste } = this.props;
     const { isFavorite } = this.state;
     this.setState({ loading: true });
     const remove = await removeSong(song);
@@ -80,4 +80,5 @@ export default class MusicCard extends Component {
 MusicCard.propTypes = {
   name: propTypes.string,
   audio: propTypes.string,
+  teste: propTypes.func,
 }.isRequired;
