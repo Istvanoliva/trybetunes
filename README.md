@@ -48,7 +48,7 @@ Neste projeto você irá criar o TrybeTunes, uma aplicação capaz de reproduzir
 
 ---
 
-# Habilidades
+## Habilidades
 Neste projeto, verificamos se voce é capaz de:
 
   * Fazer requisições e consumir dados vindos de uma `API`;
